@@ -16,23 +16,6 @@ class User
 		$this->db = Database::connect();
 	}
 
-	/**
-	* Devuelve todos los usuarios
-	* @var return array $data
-	*/
-	public function readAll()
-	{
-		$query = $this->db->prepare("SELECT * FROM usuarios");
-		$query->execute();
-
-		$data = array();
-		while( $row = $query->fetch(PDO::FETCH_ASSOC) )
-		{
-			$data[] = $row;
-		}
-		$this->db = Database::disconnect();
-		return $data;
-	}
 
 	/**
 	* Inserta un nuevo usuario en la base de datos
@@ -105,48 +88,5 @@ class User
 		}catch(PDOException $e){
 			echo $e->getMessage();
 		}
-	}
-
-	/**
-	* Envía la contraseña al usuario por mail
-	*/
-	public function forgotten($nick)
-	{
-		// marcadores
-		$datos = array("nick" => $nick);
-
-		// consulta
-		try{
-			$query = $this->db->prepare("SELECT * FROM usuarios WHERE nick=:nick");
-			$query->execute($datos);
-		}catch(PDOException $e){
-			echo $e->getMessage();
-		}
-
-		// comprobar que existe el usuario
-		if( $query->rowCount() > 0 ){
-			// guardamos los resultados
-			$r = $query->fetch(PDO::FETCH_ASSOC);
-
-			// preparar la contraseña que se va a enviar por mail
-			// y los datos para preparar el mail
-			//$password = password_get_info($r['password']); // devuelve un array con info del hash
-			echo crypt($r['password']);
-			$to = $r['mail'];
-			$subject = "[BICVEY] Tu contraseña recuperada";
-			$message = "Esta es tu contraseña del sistema, no la olvides: " . $password;
-
-			// envío del correo sin fallos
-			/*if( mail($to, $subject, $message) ){
-				echo "<div class='box text-center error'>Se ha enviado la contraseña a tu bandeja de correo.</div>";
-			} else {
-				echo "<div class='box text-center error'>Ha fallado el envío del correo</div>";
-			}*/
-		} else {
-			// no se encuentra el usuario en la base de datos
-			echo "<div class='box text-center error'>No se encuentra el usuario en el sistema</div>";
-		}
-
-		$this->db = Database::disconnect();
 	}
 }
