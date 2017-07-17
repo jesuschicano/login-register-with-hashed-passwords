@@ -2,26 +2,6 @@
 include('header.php');
 ?>
 
-<h1 class="text-center">Inicio de sesión</h1>
-<div class="box">
-	<div class="line s-12 l-6 center">
-		<form action="login.php" method="POST" class="customform">
-			<label for="nick">Nick de usuario</label>
-			<input type="text" name="nick" required value="<?php if( isset($_COOKIE['usuario_cookie']) ){ echo $_COOKIE['usuario_cookie']; } ?>">
-			
-			<label for="pass">Contraseña de usuario</label>
-			<input type="password" name="pass" required value="<?php if( isset($_COOKIE['usuario_pass']) ){ echo $_COOKIE['usuario_pass']; } ?>">
-
-			<button class="buttonn-submit-btn" type="submit" name="entrar">Entrar</button>
-			
-			<input type="checkbox" name="remember">
-			<label for="remember">Recuérdame</label>
-			
-			<a href="forgotten.php" class="right">¿Has olvidado tu contraseña?</a>
-		</form>
-	</div>
-</div>
-
 <?php
 if( isset($_POST['entrar']) ){
 	// recoger el usuario en el sistema
@@ -57,4 +37,3 @@ if( isset($_POST['entrar']) ){
 	}
 }
 ?>
-<?php include('footer.php'); ?>
